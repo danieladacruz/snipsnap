@@ -45,7 +45,7 @@
         </td></tr>
        </table>
        <input name="snip" type="hidden" value="<c:out value='${snip.name}' escapeXml='true'/>"/>
-       <input name="referer" type="hidden" value="<%= request.getHeader("REFERER") %>"/>
+       <input name="referer" type="hidden" value="<%=org.owasp.encoder.Encode.forHtml( request.getHeader("REFERER") )%>"/>
      </div>
    </s:check>
    <s:check permission="COPY_SNIP" context="${snip}" invert="true">
