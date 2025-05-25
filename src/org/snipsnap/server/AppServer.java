@@ -24,6 +24,7 @@
  */
 package org.snipsnap.server;
 
+import io.github.pixee.security.SystemCommand;
 import org.apache.xmlrpc.WebServer;
 import org.jdesktop.jdic.desktop.Desktop;
 import org.mortbay.http.HttpListener;
@@ -146,7 +147,7 @@ public class AppServer {
       String system = System.getProperty("os.name");
       if (system.startsWith("Mac OS X")) {
         try {
-          Runtime.getRuntime().exec("/usr/bin/open " + url);
+          SystemCommand.runCommand(Runtime.getRuntime(), "/usr/bin/open " + url);
         } catch (IOException e) {
           System.err.println("AppServer: unable to execute open web browser on MacOS X");
         }
