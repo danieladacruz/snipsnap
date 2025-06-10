@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 
 /**
  * SnipSnap launcher that takes care of adding the compiler to the classpath before
@@ -70,7 +71,7 @@ public class SnipSnapLauncher extends Launcher {
       if (System.getProperty("launcher.errlog") != null) {
         errorLog = new File(System.getProperty("launcher.errlog"));
       } else {
-        errorLog = File.createTempFile("snipsnap_", ".log");
+        errorLog = Files.createTempFile("snipsnap_", ".log").toFile();
       }
       System.err.println("Launcher: System.err redirected to " + errorLog.getPath());
       System.setErr(new PrintStream(new FileOutputStream(errorLog)));

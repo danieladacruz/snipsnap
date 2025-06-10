@@ -24,6 +24,7 @@
  */
 package org.snipsnap.test.server;
 
+import java.nio.file.Files;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -63,7 +64,7 @@ public class XmlRpcServerTest extends TestCase {
       }
       serverPrefs.put(ServerConfiguration.ADMIN_PASS, "test");
 
-      File tmpFile = File.createTempFile("xmlrpctest", "root");
+      File tmpFile = Files.createTempFile("xmlrpctest", "root").toFile();
       tmpFile.deleteOnExit();
       tmpFile.delete();
       tmpFile.mkdirs();

@@ -34,6 +34,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +155,7 @@ public class Launcher {
    */
   private static URL extract(URL resource) throws IOException {
     System.err.println("Launcher: extracting '" + resource.getFile() + "' ...");
-    File f = File.createTempFile("launcher_", ".jar");
+    File f = Files.createTempFile("launcher_", ".jar").toFile();
     f.deleteOnExit();
     if (f.getParentFile() != null) {
       f.getParentFile().mkdirs();

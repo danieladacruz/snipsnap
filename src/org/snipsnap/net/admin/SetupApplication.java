@@ -25,6 +25,7 @@
  */
 package org.snipsnap.net.admin;
 
+import java.nio.file.Files;
 import snipsnap.api.config.Configuration;
 import org.snipsnap.config.InitializeDatabase;
 import org.snipsnap.net.FileUploadServlet;
@@ -68,7 +69,7 @@ public class SetupApplication implements SetupHandler {
             String logoFileType = mpRequest.getFileContentType("file");
             if (logoFileType.startsWith("image")) {
               InputStream logoFileIs = mpRequest.getFileInputStream("file");
-              File logoFile = File.createTempFile("SnipSnapLogo", null);
+              File logoFile = Files.createTempFile("SnipSnapLogo", null).toFile();
               FileOutputStream imageOut = new FileOutputStream(logoFile);
               byte buffer[] = new byte[8192];
               int len = 0;
