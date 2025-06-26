@@ -25,6 +25,7 @@
 
 package org.snipsnap.versioning.cookbook;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.snipsnap.versioning.ChangeInfo;
 
 import java.io.*;
@@ -88,7 +89,7 @@ public class DiffFile {
           new FileInputStream(name)));
 
       String lineBuffer;
-      while ((lineBuffer = file.readLine()) != null) {
+      while ((lineBuffer = BoundedLineReader.readLine(file, 5_000_000)) != null) {
         buffer.append(lineBuffer);
         buffer.append("\n");
       }

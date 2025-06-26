@@ -24,6 +24,7 @@
  */
 package org.snipsnap.server;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.snipsnap.config.ServerConfiguration;
 import org.snipsnap.util.JDBCDatabaseExport;
 import org.snipsnap.util.LocaleComparator;
@@ -72,7 +73,7 @@ public class AdminClient {
     try {
       BufferedReader copyrightReader = new BufferedReader(new InputStreamReader(AdminClient.class.getResourceAsStream("/conf/copyright.txt")));
       String line = null;
-      while ((line = copyrightReader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(copyrightReader, 5_000_000)) != null) {
         System.err.println(line);
       }
     } catch (Exception e) {

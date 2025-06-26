@@ -25,6 +25,7 @@
 
 package org.snipsnap.render;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.radeox.api.engine.RenderEngine;
 import org.radeox.engine.context.BaseInitialRenderContext;
 import org.radeox.api.engine.context.InitialRenderContext;
@@ -90,7 +91,7 @@ public class PlainTextRenderEngine implements RenderEngine {
     StringBuffer buffer = new StringBuffer();
     BufferedReader inputReader = new BufferedReader(in);
     String line;
-    while ((line = inputReader.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(inputReader, 5_000_000)) != null) {
       buffer.append(line);
     }
     return render(buffer.toString(), context);

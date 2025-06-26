@@ -25,6 +25,7 @@
 
 package org.snipsnap.container;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.radeox.util.logging.Logger;
 import org.snipsnap.snip.HomePage;
 import org.snipsnap.user.AuthenticationService;
@@ -76,7 +77,7 @@ public class DefaultSessionService implements SessionService {
         BufferedReader crawler = new BufferedReader(new StringReader(robots.getContent()));
         String line;
         int ln = 0;
-        while ((line = crawler.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(crawler, 5_000_000)) != null) {
           ln++;
           if (line.length() > 0 && !line.startsWith("#")) {
             try {

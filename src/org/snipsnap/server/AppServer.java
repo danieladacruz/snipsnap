@@ -24,6 +24,7 @@
  */
 package org.snipsnap.server;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.xmlrpc.WebServer;
 import org.jdesktop.jdic.desktop.Desktop;
 import org.mortbay.http.HttpListener;
@@ -281,7 +282,7 @@ public class AppServer {
       in = AppServer.class.getResourceAsStream("/conf/copyright.txt");
       BufferedReader copyrightReader = new BufferedReader(new InputStreamReader(in));
       String line = null;
-      while ((line = copyrightReader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(copyrightReader, 5_000_000)) != null) {
         System.out.println(line);
       }
     } catch (IOException e) {

@@ -24,6 +24,7 @@
  */
 package org.snipsnap.net.filter;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.radeox.util.i18n.ResourceManager;
 import org.radeox.util.logging.LogHandler;
 import org.radeox.util.logging.Logger;
@@ -91,7 +92,7 @@ public class InitFilter implements Filter {
       BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/defaults/copyright.txt")));
       try {
         String line;
-        while (null != (line = br.readLine())) {
+        while (null != (line = BoundedLineReader.readLine(br, 5_000_000))) {
           System.out.println(line);
         }
       } catch (IOException e) {

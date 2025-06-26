@@ -25,6 +25,7 @@
 
 package org.snipsnap.snip;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.radeox.util.logging.Logger;
 import org.snipsnap.util.ApplicationAwareMap;
 import snipsnap.api.container.Components;
@@ -83,7 +84,7 @@ public class Access {
                 new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content.getBytes())));
         String line;
         try {
-          while ((line = reader.readLine()) != null) {
+          while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
             if (!line.startsWith("#")) {
               line = line.trim();
               if (!"".equals(line)) {

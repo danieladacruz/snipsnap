@@ -24,6 +24,7 @@
  */
 package org.snipsnap.config;
 
+import io.github.pixee.security.BoundedLineReader;
 import snipsnap.api.app.Application;
 import snipsnap.api.storage.ApplicationStorage;
 import org.snipsnap.app.ApplicationManager;
@@ -225,7 +226,7 @@ public class InitializeDatabase {
     BufferedReader in = new BufferedReader(new InputStreamReader(is, "UTF-8"));
     StringBuffer contents = new StringBuffer();
     String line = null;
-    while ((line = in.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
       contents.append(line).append("\n");
     }
     return contents.toString();

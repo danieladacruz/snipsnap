@@ -25,6 +25,7 @@
 
 package org.snipsnap.xmlrpc;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.radeox.util.logging.Logger;
 import snipsnap.api.app.Application;
 import snipsnap.api.snip.Snip;
@@ -103,7 +104,7 @@ public class WeblogsPing extends Thread implements Consumer {
     BufferedReader reader =
       new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.getBytes())));
     String line;
-    while ((line = reader.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
       if (!line.startsWith("#")) {
         int index = line.indexOf(" ");
         String type = line.substring(0, index);
