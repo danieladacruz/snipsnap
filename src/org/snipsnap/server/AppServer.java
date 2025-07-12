@@ -24,6 +24,8 @@
  */
 package org.snipsnap.server;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.xmlrpc.WebServer;
 import org.jdesktop.jdic.desktop.Desktop;
 import org.mortbay.http.HttpListener;
@@ -108,8 +110,8 @@ public class AppServer {
     }
 
     try {
-      URL xmlRpcServerUrl = new URL(serverPrefs.get(ServerConfiguration.ADMIN_URL,
-                                                    serverPrefsDefaults.getProperty(ServerConfiguration.ADMIN_URL)));
+      URL xmlRpcServerUrl = Urls.create(serverPrefs.get(ServerConfiguration.ADMIN_URL,
+                                                    serverPrefsDefaults.getProperty(ServerConfiguration.ADMIN_URL)), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
       WebServer xmlRpcServer = new WebServer(xmlRpcServerUrl.getPort());
       // xmlRpcServer.setParanoid(true);
       xmlRpcServer.addHandler("$default", new AdminXmlRpcHandler());
@@ -152,7 +154,7 @@ public class AppServer {
         }
       } else {
         try {
-          Desktop.browse(new URL(url));
+          Desktop.browse(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         } catch (Exception e) {
           System.err.println("AppServer: unable to open web browser on " + system);
         } catch (Error err) {

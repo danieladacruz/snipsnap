@@ -24,6 +24,8 @@
  */
 package org.snipsnap.net.filter;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.i18n.ResourceManager;
 import org.radeox.util.logging.LogHandler;
 import org.radeox.util.logging.Logger;
@@ -273,20 +275,20 @@ public class InitFilter implements Filter {
         if (colonIndex != -1) {
           host = host.substring(0, colonIndex);
           int port = Integer.parseInt(xForwardedHost.substring(colonIndex + 1));
-          app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, port, contextPath));
+          app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, port, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         } else {
-          app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, contextPath));
+          app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         }
       } else {
-        String protocol = new URL(request.getRequestURL().toString()).getProtocol();
+        String protocol = Urls.create(request.getRequestURL().toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getProtocol();
         String host = request.getServerName();
         int port = request.getServerPort();
         String contextPath = request.getContextPath() + ("/".equals(prefix) ? "" : prefix);
 
         if (port != 80) {
-          app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, port, contextPath));
+          app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, port, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         } else {
-          app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, contextPath));
+          app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         }
       }
 //      System.out.println("autoconfigured url: " + appConfig.getUrl());

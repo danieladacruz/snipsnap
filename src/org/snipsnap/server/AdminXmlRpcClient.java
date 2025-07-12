@@ -24,6 +24,8 @@
  */
 package org.snipsnap.server;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.xmlrpc.DefaultXmlRpcTransport;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcClientRequest;
@@ -42,11 +44,11 @@ public class AdminXmlRpcClient {
   private DefaultXmlRpcTransport xmlRpcTransport = null;
 
   public AdminXmlRpcClient(String url, String user, String password) throws MalformedURLException {
-    this(new URL(url), user, password);
+    this(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), user, password);
   }
 
   public AdminXmlRpcClient(URL url, String user, String password) throws MalformedURLException  {
-    URL xmlRpcUrl = new URL(url, "RPC2");
+    URL xmlRpcUrl = Urls.create(url, "RPC2", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     xmlRpcClient = new XmlRpcClient(xmlRpcUrl);
     xmlRpcTransport = new DefaultXmlRpcTransport(xmlRpcUrl);
     xmlRpcTransport.setBasicAuthentication(user != null ? user : "admin", password != null ? password : "");
@@ -72,7 +74,7 @@ public class AdminXmlRpcClient {
     args.addElement(host);
     args.addElement(port);
     args.addElement(path);
-    return new URL((String) execute("install", args));
+    return Urls.create((String) execute("install", args), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
   }
 
   public void delete(String name, boolean backup) throws XmlRpcException, IOException {

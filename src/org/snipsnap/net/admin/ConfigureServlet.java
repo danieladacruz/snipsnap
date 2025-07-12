@@ -24,6 +24,8 @@
  */
 package org.snipsnap.net.admin;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.logging.Logger;
 import org.snipsnap.app.ApplicationManager;
 import org.snipsnap.config.ConfigurationManager;
@@ -219,17 +221,17 @@ public class ConfigureServlet extends HttpServlet {
       if (colonIndex != -1) {
         host = host.substring(0, colonIndex);
         int port = Integer.parseInt(xForwardedHost.substring(colonIndex + 1));
-        app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, port, contextPath));
+        app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, port, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       } else {
-        app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, contextPath));
+        app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
       }
     } else {
-      String protocol = new URL(request.getRequestURL().toString()).getProtocol();
+      String protocol = Urls.create(request.getRequestURL().toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getProtocol();
       String host = request.getServerName();
       int port = request.getServerPort();
       String contextPath = request.getContextPath() + ("/".equals(prefix) ? "" : prefix);
 
-      app.storeObject(snipsnap.api.app.Application.URL, new URL(protocol, host, port, contextPath));
+      app.storeObject(snipsnap.api.app.Application.URL, Urls.create(protocol, host, port, contextPath, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
     }
 
     snipsnap.api.app.Application.get().setConfiguration(config);

@@ -25,6 +25,8 @@
 
 package org.snipsnap.util.mail;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.logging.Logger;
 import snipsnap.api.app.Application;
 import snipsnap.api.config.Configuration;
@@ -105,7 +107,7 @@ public class Mail {
     if (null == sender) {
       sender = configuration.getUrl();
       try {
-        sender = new URL(sender).getHost();
+        sender = Urls.create(sender, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getHost();
       } catch (MalformedURLException e) {
         sender = "this-is-a-bug.org";
       }

@@ -24,6 +24,8 @@
  */
 package org.snipsnap.config;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import snipsnap.api.app.Application;
 import snipsnap.api.config.*;
 import snipsnap.api.config.Configuration;
@@ -240,7 +242,7 @@ public class ConfigurationMap {
     if ("app.domain".equals(oldProperty) || "app.url".equals(oldProperty)) {
       if (value != null && value.length() > 0) {
         try {
-          URL url = new URL(value);
+          URL url = Urls.create(value, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
           System.out.println("INFO: converting '" + oldProperty + "' to 'app.real.*'");
           properties.setProperty(Configuration.APP_REAL_HOST, url.getHost());
           if (url.getPort() >= 0 && url.getPort() != 80) {

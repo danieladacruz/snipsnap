@@ -25,6 +25,8 @@
 
 package org.snipsnap.render.filter.links;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.Encoder;
 import org.radeox.util.i18n.ResourceManager;
 import org.radeox.util.logging.Logger;
@@ -89,7 +91,7 @@ public class BackLinks {
   }
 
   private static void renderView(Writer writer, String url) throws IOException {
-    URL urlInfo = new URL(url);
+    URL urlInfo = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     String info = null;
     try {
       if(googleHost != null && googleHost.equals(InetAddress.getByName(urlInfo.getHost()))) {

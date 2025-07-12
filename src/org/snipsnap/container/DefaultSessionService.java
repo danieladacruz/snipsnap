@@ -25,6 +25,8 @@
 
 package org.snipsnap.container;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.logging.Logger;
 import org.snipsnap.snip.HomePage;
 import org.snipsnap.user.AuthenticationService;
@@ -268,7 +270,7 @@ public class DefaultSessionService implements SessionService {
     String path;
     snipsnap.api.config.Configuration config = snipsnap.api.app.Application.get().getConfiguration();
     try {
-      path = new URL(config.getUrl()).getPath();
+      path = Urls.create(config.getUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath();
       if (path == null || path.length() == 0) {
         path = "/";
       }

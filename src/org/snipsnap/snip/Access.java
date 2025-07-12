@@ -25,6 +25,8 @@
 
 package org.snipsnap.snip;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.logging.Logger;
 import org.snipsnap.util.ApplicationAwareMap;
 import snipsnap.api.container.Components;
@@ -213,7 +215,7 @@ public class Access {
 
   public static boolean isValidReferrer(String url) {
     try {
-      URL refURL = new URL(url);
+      URL refURL = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
       if (refURL.getHost().indexOf(".") == -1) {
         return false;
       }
@@ -229,7 +231,7 @@ public class Access {
               return false;
             }
           } else {
-            String host = new URL(url).getHost().toLowerCase();
+            String host = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getHost().toLowerCase();
             if (host.endsWith(entry.trim())) {
               Logger.warn("invalid referrer url '" + url + "' by domain '" + entry + "'");
               return false;

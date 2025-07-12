@@ -25,6 +25,8 @@
 
 package org.snipsnap.snip;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.radeox.util.logging.Logger;
 
 import java.util.Collections;
@@ -129,7 +131,7 @@ public class Links {
     while (linkIt.hasNext()) {
       String url = (String) linkIt.next();
       try {
-        String host = new URL(url).getHost().toLowerCase();
+        String host = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getHost().toLowerCase();
         if(host.endsWith(domain)) {
           linkIt.remove();
           removedLinks++;

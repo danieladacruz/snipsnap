@@ -25,6 +25,8 @@
 
 package org.snipsnap.render.filter.links;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -51,7 +53,7 @@ public class GoogleUrlFormatter implements UrlFormatter {
     if (urlString.startsWith("http://www.google.de/")) {
       URL url = null;
       try {
-        url = new URL(urlString);
+        url = Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         result = "Google: ";
         String query = url.getQuery();
       } catch (MalformedURLException e) {

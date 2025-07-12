@@ -24,6 +24,8 @@
  */
 package org.snipsnap.test.server;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -80,7 +82,7 @@ public class XmlRpcServerTest extends TestCase {
       Preferences serverPrefs = Preferences.userNodeForPackage(ServerConfiguration.class);
 
       if (null == xmlRpcServer) {
-        URL url = new URL(serverPrefs.get(ServerConfiguration.ADMIN_URL, null));
+        URL url = Urls.create(serverPrefs.get(ServerConfiguration.ADMIN_URL, null), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         serverPrefs.put(ServerConfiguration.ADMIN_USER, "ADMIN");
         serverPrefs.put(ServerConfiguration.ADMIN_PASS, "ADMIN");
         serverPrefs.flush();
@@ -111,7 +113,7 @@ public class XmlRpcServerTest extends TestCase {
       return;
     }
     try {
-      URL url = new URL("http://" + InetAddress.getLocalHost().getHostName() + ":8668/?key=");
+      URL url = Urls.create("http://" + InetAddress.getLocalHost().getHostName() + ":8668/?key=", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
       URL result = xmlRpcClient.install("test", "localhost", "8668", "/");
       assertTrue(result.toExternalForm().startsWith(url.toExternalForm()));
     } catch (XmlRpcException e) {
