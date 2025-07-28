@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.FilenameFilter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.nio.file.Files;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -127,7 +128,7 @@ public class ExprEditor {
 
   private static void storeFileContent(File file, String content) throws IOException {
     File modifiedFile = new File(file.getParentFile(), file.getName() + ".new");
-    BufferedWriter writer = new BufferedWriter(new FileWriter(modifiedFile));
+    BufferedWriter writer = Files.newBufferedWriter(modifiedFile.toPath());
     writer.write(content);
     writer.close();
     modifiedFile.renameTo(file);
