@@ -47,7 +47,7 @@
       </td></tr>
      </table>
      <input name="comment" type="hidden" value="<c:out value="${snip.name}"/>"/>
-     <input name="referer" type="hidden" value="<%= request.getHeader("REFERER") %>"/>
+     <input name="referer" type="hidden" value="<%=org.owasp.encoder.Encode.forHtml( request.getHeader("REFERER") )%>"/>
     </form>
    </div>
   </s:check>
